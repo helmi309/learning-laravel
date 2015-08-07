@@ -38,7 +38,7 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Laravel 5</div>
+                <a href="{{route("admin::dashboard")}}"><div class="title">Laravel 5</div></a>
             </div>
         </div>
     </body>
