@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Contracts\GuestContract;
 use App\Guest;
 use App\Http\Requests\GuestRueqest;
+
 
 /**
  * Class GuestController
@@ -11,39 +13,39 @@ use App\Http\Requests\GuestRueqest;
  */
 class GuestController extends Controller
 {
+
+    protected $guest;
+
+    public function __construct(
+        GuestContract $guest
+    )
+    {
+        $this->guest = $guest;
+    }
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
+
     public function index()
     {
-        return Guest::all();
+        return $this->guest->index();
     }
 
-    /**
-     * @param GuestRueqest $rueqest
-     * @return Guest
-     */
-    public function store(GuestRueqest $rueqest)
+
+    public function store(GuestRueqest $request)
     {
-        $guest = new Guest;
-
-        $guest->name = $rueqest->name;
-        $guest->phone = $rueqest->phone;
-        $guest->email = $rueqest->email;
-        $guest->sites = $rueqest->sites;
-        $guest->message = $rueqest->message;
-        $guest->save();
-
-        return $guest;
+        return $this->guest->store($request->all());
     }
 
-    /**
-     * @param $id
+    /**ram $id
      * @return \Illuminate\Support\Collection|static
      */
+
     public function show($id)
     {
-        return Guest::findOrNew($id);
+        return $this->guest->show($id);
     }
 
     /**
@@ -51,17 +53,9 @@ class GuestController extends Controller
      * @param $id
      * @return \Illuminate\Support\Collection|static
      */
-    public function update(GuestRueqest $request, $id)
+    public function update(GuestRueqest $request,$id)
     {
-        $guest = Guest::findOrNew($id);
-        $guest->name = $request->name;
-        $guest->phone = $request->phone;
-        $guest->email = $request->email;
-        $guest->sites = $request->sites;
-        $guest->message = $request->message;
-        $guest->save();
-
-        return $guest;
+        return $this->guest->update($request->all(),$id);
     }
 
 
@@ -71,8 +65,6 @@ class GuestController extends Controller
      */
     public function destroy($id)
     {
-        $guest = Guest::findOrNew($id);
-        $guest->delete();
-        return $guest;
+        return $this->guest->destroy($id);
     }
 }

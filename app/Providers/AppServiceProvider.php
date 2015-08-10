@@ -23,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // register guest
+        $this->app->when('App\Http\Controllers\GuestController')
+            ->needs('App\Domain\Contracts\GuestContract')
+            ->give('App\Domain\Repositories\GuestRepository');
+
+
     }
 }
